@@ -521,7 +521,7 @@ def main():
     ver = hashlib.sha1(b"".join((ASSETS / n).read_bytes() for n in names)).hexdigest()[:8]
     asset_re = re.compile(r'(assets/(?:styles|pages)\.css|assets/(?:app|rentals|i18n|i18n-es)\.js)(\?v=\w+)?')
     for page in ROOT.glob("*.html"):
-        if page.name == "comparacion.html":
+        if page.name in ("comparacion.html", "organizacion.html"):
             continue
         text = add_i18n(page.read_text(encoding="utf-8"))
         page.write_text(asset_re.sub(lambda m: f"{m.group(1)}?v={ver}", text),

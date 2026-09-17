@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MD3 Homes — Reorganización del menú</title>
+<style>
+  :root {
+    --ink: #17202e;
+    --muted: #5b6676;
+    --line: #dfe3ea;
+    --bg: #f6f7f9;
+    --card: #fff;
+    --blue: #1d4ed8;
+    --red: #b42318;
+    --green: #067647;
+    --pad: clamp(18px, 4vw, 56px);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 16px/1.6 "Segoe UI", system-ui, sans-serif;
+  }
+  header { background: var(--ink); color: #fff; padding: clamp(30px, 5vw, 54px) var(--pad); }
+  header h1 { margin: 0 0 10px; font-size: clamp(24px, 3.4vw, 36px); line-height: 1.2; }
+  header p { margin: 0; max-width: 62ch; color: #c6cedb; }
+  .tag { display: inline-block; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #8fb0ff; margin-bottom: 14px; }
+
+  main { padding: clamp(26px, 4vw, 48px) var(--pad) 70px; max-width: 1220px; margin: 0 auto; }
+  h2 { font-size: clamp(19px, 2.2vw, 24px); margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 22px; }
+
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 22px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: clamp(18px, 2.4vw, 28px); }
+  .card > h3 { margin: 0 0 4px; font-size: 17px; }
+  .card > h3 span { font-weight: 400; color: var(--muted); font-size: 14px; }
+  .card.now { border-top: 3px solid var(--red); }
+  .card.next { border-top: 3px solid var(--green); }
+
+  ul.menu { list-style: none; margin: 16px 0 0; padding: 0; }
+  ul.menu > li { padding: 9px 0; border-bottom: 1px dashed var(--line); }
+  ul.menu > li:last-child { border-bottom: none; }
+  ul.menu b { font-weight: 600; }
+  ul.menu .kids { display: block; color: var(--muted); font-size: 14px; margin-top: 4px; padding-left: 14px; border-left: 2px solid var(--line); }
+  .note { display: inline-block; font-size: 12.5px; padding: 2px 8px; border-radius: 99px; margin-left: 6px; vertical-align: 1px; }
+  .bad { background: #fdecea; color: var(--red); }
+  .good { background: #e7f6ee; color: var(--green); }
+  .bar { margin-top: 18px; padding: 12px 14px; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; font-size: 14px; }
+  .bar b { display: block; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+
+  ol.changes { counter-reset: c; list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+  ol.changes li { counter-increment: c; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px 18px 62px; position: relative; }
+  ol.changes li::before {
+    content: counter(c); position: absolute; left: 20px; top: 18px;
+    width: 26px; height: 26px; border-radius: 99px; background: var(--ink); color: #fff;
+    font-size: 13px; display: grid; place-items: center;
+  }
+  ol.changes h4 { margin: 0 0 5px; font-size: 16px; }
+  ol.changes p { margin: 0; color: var(--muted); font-size: 15px; }
+  .ba { margin-top: 10px; font-size: 14px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .chip { padding: 4px 10px; border-radius: 6px; font-family: ui-monospace, Consolas, monospace; font-size: 13px; }
+  .chip.a { background: #fdecea; color: var(--red); text-decoration: line-through; }
+  .chip.b { background: #e7f6ee; color: var(--green); }
+
+  section { margin-top: clamp(34px, 5vw, 56px); }
+  .keep { background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--blue); border-radius: 10px; padding: 20px 22px; }
+  .keep ul { margin: 10px 0 0; padding-left: 20px; color: var(--muted); }
+  .refs { font-size: 14px; color: var(--muted); }
+  .refs a { color: var(--blue); }
+  footer { padding: 26px var(--pad) 50px; text-align: center; color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="tag">MD3 Homes · propuesta</span>
+  <h1>Reorganizar el sitio, sin rediseñarlo</h1>
+  <p>El diseño, los colores, el logo, las fotos y los textos se quedan igual. Lo único que cambia es
+  <strong>dónde está cada cosa</strong>: el menú, cómo se agrupan las páginas que ya existen y los accesos al portal.</p>
+</header>
+
+<main>
+
+  <h2>El menú: antes y después</h2>
+  <p class="sub">Las páginas son las mismas. Solo cambian de lugar y de nombre.</p>
+
+  <div class="cols">
+    <div class="card now">
+      <h3>Hoy <span>· 9 elementos</span></h3>
+      <ul class="menu">
+        <li><b>MD3 Exclusives</b> <span class="note bad">el nombre no dice que ahí están las propiedades</span></li>
+        <li><b>Buy</b>
+          <span class="kids">How to Buy · Investment Properties · Full Service · International Buyers · Foreclosure and Short-Sale</span>
+        </li>
+        <li><b>Sell</b>
+          <span class="kids">How to Sell · Determining The Market Price · The Process</span>
+        </li>
+        <li><b>Rent</b> <span class="note bad">lleva a la página de inicio</span>
+          <span class="kids">Who is Eligible to Rent? · Rental Process · Property Management <span class="note bad">escondida</span></span>
+        </li>
+        <li><b>Financing</b></li>
+        <li><b>About Us</b></li>
+        <li><b>Contact Us</b></li>
+        <li><b>Sign In</b> <span class="note bad">una sola entrada para inquilinos y propietarios</span></li>
+        <li><b>Español</b> <span class="note bad">sale del sitio</span></li>
+      </ul>
+    </div>
+
+    <div class="card next">
+      <h3>Propuesta <span>· 8 elementos + barra de accesos</span></h3>
+      <ul class="menu">
+        <li><b>Search</b> <span class="note good">nuevo</span>
+          <span class="kids">Available Rentals · Property Search</span>
+        </li>
+        <li><b>Buy</b>
+          <span class="kids">How to Buy · Investment Properties · Full Service · International Buyers · Foreclosure &amp; Short-Sale</span>
+        </li>
+        <li><b>Sell</b>
+          <span class="kids">How to Sell · Determining the Market Price · The Process</span>
+        </li>
+        <li><b>Rent</b>
+          <span class="kids">Available Rentals · Who is Eligible to Rent? · Rental Process</span>
+        </li>
+        <li><b>Property Management</b> <span class="note good">sube: es lo que buscan los propietarios</span></li>
+        <li><b>Financing</b></li>
+        <li><b>About Us</b></li>
+        <li><b>Contact Us</b></li>
+      </ul>
+      <div class="bar">
+        <b>Barra superior</b>
+        Residents Login · Owners Login · Apply Now · EN / ES
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <h2>Los cinco cambios</h2>
+    <p class="sub">Cada uno resuelve algo que hoy le cuesta al visitante.</p>
+    <ol class="changes">
+      <li>
+        <h4>Las propiedades dejan de estar escondidas</h4>
+        <p>Hoy las rentas disponibles viven detrás de un nombre que no las anuncia. Es lo primero que busca quien entra.</p>
+        <div class="ba"><span class="chip a">MD3 Exclusives</span> → <span class="chip b">Available Rentals</span></div>
+      </li>
+      <li>
+        <h4>Dos accesos, no uno</h4>
+        <p>El portal ya tiene dos entradas distintas: una para inquilinos y otra para administración y propietarios. El menú debería mostrarlas por separado.</p>
+        <div class="ba"><span class="chip a">Sign In</span> → <span class="chip b">Residents Login</span> <span class="chip b">Owners Login</span></div>
+      </li>
+      <li>
+        <h4>Administración de propiedades, a la vista</h4>
+        <p>Hoy está dentro de <em>Rent</em>, como si fuera para inquilinos. Es el servicio que contrata un propietario.</p>
+        <div class="ba"><span class="chip a">Rent → Property Management</span> → <span class="chip b">Property Management</span></div>
+      </li>
+      <li>
+        <h4>Solicitar una renta se vuelve visible</h4>
+        <p>Es el paso que trae clientes y hoy solo existe dentro del portal.</p>
+        <div class="ba"><span class="chip b">Apply Now</span> en la barra superior</div>
+      </li>
+      <li>
+        <h4>Se arregla un enlace roto</h4>
+        <p>Al hacer clic en <em>Rent</em> el sitio devuelve al visitante a la página de inicio.</p>
+        <div class="ba"><span class="chip a">Rent → inicio</span> → <span class="chip b">Rent → página de alquiler</span></div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Lo que no se toca</h2>
+    <div class="keep">
+      <p>Esta propuesta <strong>no cambia el diseño</strong>. Se queda exactamente igual:</p>
+      <ul>
+        <li>El logo, los colores y las tipografías.</li>
+        <li>Las fotos y todos los textos de las páginas.</li>
+        <li>El portal de inquilinos, que es de Buildium y no se puede modificar desde fuera.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>De dónde sale esta estructura</h2>
+    <p class="refs">
+      De tres inmobiliarias de Florida con el mismo negocio que MD3 (venta, alquiler y administración),
+      todas con sitios sencillos y sin grandes diseños:
+      <a href="https://www.florida-brokers.com/" target="_blank" rel="noopener">Florida Brokers</a> (Hollywood, FL),
+      <a href="https://www.atriummanagement.com/" target="_blank" rel="noopener">Atrium Property Management</a> (Orlando) y
+      <a href="https://4rentorlando.com/" target="_blank" rel="noopener">Realsource</a> (Orlando).
+      Las tres ponen las propiedades disponibles en el menú principal, separan propietarios de inquilinos
+      y tienen accesos de sesión distintos para cada uno.
+    </p>
+  </section>
+
+</main>
+
+<footer>MD3 Homes · propuesta de reorganización</footer>
+
+</body>
+</html>
