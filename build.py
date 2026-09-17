@@ -1,7 +1,5 @@
-"""Genera las paginas internas de la propuesta MD3 Homes.
-
-Extrae el CSS/JS de propuesta-v2.html a assets/ compartidos y crea las 11
-subpaginas con el contenido real tomado de md3homes.com.
+"""Genera la propuesta MD3 Homes: actualiza la home (index.html) y crea las
+11 subpaginas y la seccion de rentas con el contenido real de md3homes.com.
 """
 import html
 import pathlib
@@ -10,7 +8,7 @@ import re
 import rentals_build as rb
 
 ROOT = pathlib.Path(__file__).parent
-HOME = ROOT / "propuesta-v2.html"
+HOME = ROOT / "index.html"
 ASSETS = ROOT / "assets"
 IMG = "https://md3homes.com/images/site/"
 PORTAL = ("https://md3homes.managebuilding.com/Resident/PublicPages/"
@@ -281,15 +279,15 @@ def page_html(p):
 </head>
 <body class="inner">
 
-{nav('propuesta-v2.html', p['slug'])}
+{nav('index.html', p['slug'])}
 
-{mobile('propuesta-v2.html')}
+{mobile('index.html')}
 
 <header class="phead">
   <nav class="crumbs" aria-label="Breadcrumb">
-    <a href="propuesta-v2.html">Home</a>
+    <a href="index.html">Home</a>
     <span>/</span>
-    <a href="propuesta-v2.html{anchor}">{group_label}</a>
+    <a href="index.html{anchor}">{group_label}</a>
     <span>/</span>
     <span class="here">{html.escape(p['title'])}</span>
   </nav>
@@ -337,7 +335,7 @@ def page_html(p):
   </div>
 </section>
 
-{footer('propuesta-v2.html')}
+{footer('index.html')}
 
 <script src="assets/app.js"></script>
 </body>
@@ -375,7 +373,9 @@ body.inner .burger { color: var(--ink); }
 .siblings .subgrid { margin-top: clamp(28px, 3vw, 44px); }
 
 @media (max-width: 900px) {
+  .pbody .grid { grid-template-columns: minmax(0, 1fr); gap: 26px; }
   .plead, .ptext { grid-column: 1 / -1; }
+  .crumbs, .phead .idx { font-size: 11px; }
 }
 """
 
@@ -396,13 +396,13 @@ def page_shell(title, body, scripts=("assets/app.js",)):
 </head>
 <body class="inner">
 
-{nav('propuesta-v2.html')}
+{nav('index.html')}
 
-{mobile('propuesta-v2.html')}
+{mobile('index.html')}
 
 {body}
 
-{footer('propuesta-v2.html')}
+{footer('index.html')}
 
 {tags}
 </body>

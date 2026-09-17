@@ -135,7 +135,14 @@
 
 @media (max-width: 900px) {
   .acards { grid-template-columns: 1fr; }
+  .docs, .ldetail { grid-template-columns: minmax(0, 1fr); }
   .dhead, .dlist { grid-column: 1 / -1; }
+  .filters input, .filters select { font-size: 16px; }
+  .filters .f { flex: 1 1 100%; border-right: none; }
+  .ghostreset { flex: 1 1 100%; }
+  .lkind, .lcount, .dico, .dname small, .rcount, .dsize, .filters .f span { font-size: 11px; }
+  .gall { right: calc(var(--pad) + 12px); bottom: 12px; }
+  .lhead h1 { font-size: clamp(34px, 9vw, 48px); }
   .lmain, .lside { grid-column: 1 / -1; }
   .lside { position: static; }
   .gallery { grid-template-columns: 1fr; height: auto; }

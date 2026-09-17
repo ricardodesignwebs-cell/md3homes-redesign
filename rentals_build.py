@@ -124,8 +124,8 @@ def rentals_body():
       </a>""" for t, f, s in DOCUMENTS)
     return f"""<header class="phead rhead">
   <nav class="crumbs" aria-label="Breadcrumb">
-    <a href="propuesta-v2.html">Home</a><span>/</span>
-    <a href="propuesta-v2.html#rent">Rent</a><span>/</span>
+    <a href="index.html">Home</a><span>/</span>
+    <a href="index.html#rent">Rent</a><span>/</span>
     <span class="here">Available Rentals</span>
   </nav>
   <span class="idx">MD3 Exclusives</span>
@@ -249,7 +249,7 @@ def listing_body(l):
 
     return f"""<header class="phead lhead">
   <nav class="crumbs" aria-label="Breadcrumb">
-    <a href="propuesta-v2.html">Home</a><span>/</span>
+    <a href="index.html">Home</a><span>/</span>
     <a href="rentals.html">Rentals</a><span>/</span>
     <span class="here">{html.escape(l['address'])}</span>
   </nav>
@@ -402,6 +402,14 @@ RENTALS_JS = r"""(() => {
   box.querySelector('.prev').addEventListener('click', () => show(i - 1));
   box.querySelector('.next').addEventListener('click', () => show(i + 1));
   box.addEventListener('click', (e) => { if (e.target === box) close(); });
+  let x0 = null;
+  box.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+  box.addEventListener('touchend', (e) => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 40) show(dx < 0 ? i + 1 : i - 1);
+    x0 = null;
+  });
   document.addEventListener('keydown', (e) => {
     if (box.hidden) return;
     if (e.key === 'Escape') close();

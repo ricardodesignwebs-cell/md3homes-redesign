@@ -11,7 +11,7 @@
     --display: 'Instrument Serif', serif;
     --body: 'DM Sans', sans-serif;
     --mono: 'DM Mono', monospace;
-    --pad: clamp(20px, 5vw, 76px);
+    --pad: max(clamp(20px, 5vw, 76px), calc((100vw - 1480px) / 2));
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -85,7 +85,7 @@
   .nav.solid .btn.outline:hover { background: var(--accent); color: #fff; }
 
   /* hero */
-  .hero { position: relative; min-height: 92vh; display: flex; align-items: flex-end; padding: 130px var(--pad) clamp(90px, 12vh, 150px); isolation: isolate; }
+  .hero { position: relative; min-height: 92vh; min-height: 92svh; display: flex; align-items: flex-end; padding: 130px var(--pad) clamp(90px, 12vh, 150px); isolation: isolate; }
   .hero .bg { position: absolute; inset: 0; z-index: -2; background-image: url('https://md3homes.com/templates/md3v2024005/images/HomeDesktopheader.png'); background-size: cover; background-position: center; }
   .hero .bg::after { content: ''; position: absolute; inset: 0; background: var(--scrim); }
   .hero-inner { max-width: 1120px; }
@@ -189,7 +189,9 @@
     .nav > ul, .nav .lang, .nav .btn.outline { display: none; }
     .burger { display: inline-flex; }
     .chapter .media, .chapter .txt, .chapter.flip .media, .chapter.flip .txt { grid-column: 1 / -1; grid-row: auto; margin: 0; }
-    .fin .head h2, .fin .head p, .contact .left, .contact .right { grid-column: 1 / -1; }
+    .chapter .grid, .fin .head, .contact .grid { grid-template-columns: minmax(0, 1fr); }
+    .fin .head > *, .contact .left, .contact .right { grid-column: 1 / -1; }
+    .fin .head { gap: 22px; }
     .row { grid-template-columns: 40px 1fr; }
     .row p { grid-column: 2; }
     footer .cols { grid-template-columns: 1fr; }
@@ -202,3 +204,34 @@
   @media (max-width: 560px) {
     .subgrid.of5, .subgrid.of3 { grid-template-columns: 1fr; }
   }
+
+  .fin .head .ftitle { grid-column: span 6; }
+
+  /* touch screens (tablets included): no hover, use the full-screen menu */
+  @media (hover: none) and (pointer: coarse) {
+    .nav > ul, .nav .lang, .nav .btn.outline { display: none; }
+    .burger { display: inline-flex; }
+  }
+
+  @media (max-width: 900px) {
+    .nav .brand { display: inline-flex; align-items: center; min-height: 44px; }
+    .hero { padding-bottom: 110px; }
+
+    .search { flex-direction: column; padding: 0; }
+    .search .tabs { flex-direction: row; gap: 0; padding: 0 8px; border-right: none; border-bottom: 1px solid var(--line); }
+    .search .tabs button { flex: 1; text-align: center; padding: 16px 0 14px; border-bottom: 2px solid transparent; }
+    .search .tabs button[aria-pressed="true"] { border-bottom-color: var(--accent); }
+    .search .f { flex: none; border-right: none; border-bottom: 1px solid var(--line); padding: 14px 20px; }
+    .search .go { margin: 14px; padding: 0; }
+    .search .go .btn { width: 100%; padding: 15px; }
+
+    .search .f input, .search .f select { font-size: 16px; }
+    .lbl, .chapter .idx, .search .f span, footer .ttl, .contact .item span { font-size: 11px; }
+    .row .n { font-size: 11px; }
+  }
+
+  @media (max-width: 380px) {
+    .nav .btn { padding: 10px 14px; }
+    .hero h1 { font-size: 40px; }
+  }
+
