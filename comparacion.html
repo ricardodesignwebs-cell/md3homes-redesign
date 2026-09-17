@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MD3 Homes — Comparación de 4 prediseños</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #0E1116; color: #E6E9EF; font-family: 'Work Sans', sans-serif; }
+
+  header.bar { position: sticky; top: 0; z-index: 50; background: #0E1116; border-bottom: 1px solid #222833; padding: 16px 24px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  header.bar h1 { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 600; margin: 0; }
+  header.bar p { margin: 0; font-size: 13px; color: #8A93A6; flex: 1; min-width: 240px; }
+  .modes { display: flex; gap: 8px; }
+  .modes button { border: 1px solid #2C3444; background: transparent; color: #E6E9EF; font-family: inherit; font-size: 13px; padding: 8px 16px; border-radius: 8px; cursor: pointer; }
+  .modes button[aria-pressed="true"] { background: #E6E9EF; color: #0E1116; border-color: #E6E9EF; font-weight: 600; }
+
+  .stage { padding: 24px; }
+  .stage.compare { display: flex; gap: 20px; align-items: flex-start; overflow-x: auto; }
+  .stage.single { display: block; }
+
+  .slot { flex: 0 0 auto; }
+  .slot h2 { font-family: 'Work Sans', sans-serif; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #8A93A6; margin: 0 0 4px; }
+  .slot .sub { font-size: 12px; color: #5D6577; margin: 0 0 12px; }
+  .viewport { overflow: hidden; border-radius: 10px; border: 1px solid #222833; background: #fff; }
+  .viewport > .page { transform-origin: top left; }
+
+  .stage.single .slot { display: none; }
+  .stage.single .slot.active { display: block; margin: 0 auto; max-width: 1280px; }
+
+  /* ---- shared page skeleton, themed by CSS vars ---- */
+  .page { width: 1280px; font-family: var(--body); background: var(--bg); color: var(--text); }
+  .page h1, .page h2, .page h3 { font-family: var(--display); margin: 0; font-weight: var(--dw); letter-spacing: var(--ls); }
+  .page a { text-decoration: none; color: inherit; }
+
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 48px; background: var(--surface); border-bottom: 1px solid var(--border); }
+  .logo { font-family: var(--display); font-size: 21px; font-weight: 600; color: var(--text); }
+  .logo span { font-family: var(--body); font-size: 10px; letter-spacing: 0.14em; color: var(--accent); font-weight: 600; }
+  .nav .links { display: flex; gap: 24px; font-size: 13px; color: var(--text); opacity: 0.8; }
+  .btn { border: none; border-radius: var(--r-btn); background: var(--accent); color: var(--onAccent); font-family: var(--body); font-size: 13px; font-weight: 600; padding: 10px 20px; cursor: pointer; }
+  .btn.ghost { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
+
+  .hero { padding: 56px 48px; background: var(--heroBg); display: flex; flex-direction: column; gap: 20px; }
+  .hero h1 { font-size: 42px; line-height: 1.12; color: var(--heroText); max-width: 560px; }
+  .hero p { font-size: 16px; line-height: 1.6; color: var(--heroMuted); max-width: 440px; margin: 0; }
+  .photo-note { font-size: 11px; letter-spacing: 0.04em; color: var(--heroMuted); border: 1px dashed var(--heroMuted); border-radius: 6px; padding: 4px 10px; align-self: flex-start; }
+
+  .search { background: var(--surface); border-radius: var(--r-card); padding: 16px 18px 18px; max-width: 620px; box-shadow: var(--shadow); }
+  .search .tabs { display: flex; gap: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 14px; }
+  .search .tabs span { font-size: 13px; font-weight: 600; color: var(--muted); padding-bottom: 6px; }
+  .search .tabs span.on { color: var(--accent); border-bottom: 2px solid var(--accent); }
+  .search .row { display: flex; gap: 8px; align-items: stretch; }
+  .field { flex: 1; border: 1px solid var(--border); border-radius: var(--r-btn); padding: 8px 12px; display: flex; flex-direction: column; }
+  .field small { font-size: 9px; letter-spacing: 0.06em; color: var(--muted); }
+  .field b { font-size: 13px; font-weight: 400; color: var(--text); margin-top: 2px; }
+
+  .trust { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 32px 48px; background: var(--surface); border-bottom: 1px solid var(--border); }
+  .trust div { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--text); }
+  .ico { width: 36px; height: 36px; border-radius: var(--r-btn); background: var(--tint); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+
+  .split { display: flex; gap: 40px; align-items: center; padding: 64px 48px; }
+  .split.rev { flex-direction: row-reverse; }
+  .split .txt { flex: 1; }
+  .eyebrow { font-size: 11px; letter-spacing: 0.14em; font-weight: 600; color: var(--accent); margin-bottom: 10px; }
+  .split h2 { font-size: 27px; margin-bottom: 12px; }
+  .split p { font-size: 15px; line-height: 1.7; color: var(--muted); margin: 0; max-width: 420px; }
+  .imgbox { flex: 1; height: 230px; border-radius: var(--r-card); background: var(--tint); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--muted); }
+
+  .band { margin: 0 48px 64px; padding: 48px; border-radius: var(--r-card); background: var(--dark); display: flex; gap: 40px; align-items: center; }
+  .band .imgbox { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.55); height: 180px; }
+  .band h2 { font-size: 25px; color: var(--onDark); margin-bottom: 12px; }
+  .band p { font-size: 15px; line-height: 1.7; color: var(--onDarkMuted); margin: 0; max-width: 420px; }
+
+  .center { padding: 0 48px 64px; text-align: center; }
+  .center h2 { font-size: 28px; }
+  .rule { width: 46px; height: 3px; background: var(--accent); margin: 16px auto 26px; }
+  .center p { font-size: 15px; line-height: 1.8; color: var(--muted); max-width: 660px; margin: 0 auto; }
+
+  .fin { padding: 64px 48px; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .fin .head { text-align: center; margin-bottom: 36px; }
+  .fin h2 { font-size: 28px; }
+  .fin .head p { font-size: 15px; line-height: 1.7; color: var(--muted); max-width: 600px; margin: 14px auto 0; }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-card); padding: 22px; }
+  .card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+  .card p { font-size: 13px; line-height: 1.6; color: var(--muted); margin: 0; }
+
+  .cta { margin: 64px 48px; padding: 44px 48px; border-radius: var(--r-card); background: var(--accent); display: flex; align-items: center; justify-content: space-between; gap: 32px; }
+  .cta h2 { font-size: 24px; color: var(--onAccent); }
+  .cta p { font-size: 14px; color: var(--onAccentMuted); margin: 8px 0 0; max-width: 440px; }
+  .cta button { border: none; border-radius: var(--r-btn); background: var(--onAccent); color: var(--accent); font-family: var(--body); font-size: 14px; font-weight: 600; padding: 14px 28px; cursor: pointer; white-space: nowrap; }
+
+  .foot { background: var(--dark); padding: 44px 48px 22px; }
+  .foot .cols { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 32px; }
+  .foot p, .foot span, .foot a { font-size: 12px; line-height: 1.7; color: var(--onDarkMuted); }
+  .foot .lbl { font-size: 10px; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); display: block; margin-bottom: 12px; }
+  .foot .links { display: flex; flex-direction: column; gap: 8px; }
+  .foot .legal { border-top: 1px solid rgba(255,255,255,0.12); margin-top: 32px; padding-top: 18px; font-size: 11px; color: rgba(255,255,255,0.38); }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <h1>MD3 Homes — 4 prediseños</h1>
+  <p>Mismo contenido real de md3homes.com en las cuatro. Solo cambia la dirección visual.</p>
+  <div class="modes" id="modes">
+    <button data-mode="compare" aria-pressed="true">Comparar las 4</button>
+    <button data-mode="A" aria-pressed="false">A</button>
+    <button data-mode="B" aria-pressed="false">B</button>
+    <button data-mode="C" aria-pressed="false">C</button>
+    <button data-mode="D" aria-pressed="false">D</button>
+  </div>
+</header>
+
+<main class="stage compare" id="stage"></main>
+
+<script>
+const CONTENT = {
+  nav: ['Buy','Sell','Rent','Financing','About Us','Contact Us'],
+  heroTitle: 'Looking to Buy, Sell or Rent?',
+  heroText: 'Whether you want to buy, rent or sell your home, MD3 HOMES is here to help.',
+  searchPlaceholders: [['LOCATION','Orlando, FL'],['PROPERTY TYPE','Any Type'],['PRICE RANGE','$Min – $Max']],
+  trust: ['Bilingual: English & Spanish','Florida Real Estate Specialists','Local & International Clients','Buying, Selling & Pre-Construction'],
+  buy: 'One of the most significant decisions you will ever make is purchasing a home, and we are committed to making that process as simple as possible.',
+  sell: 'Selling your home can be a daunting task, but our agents can help make the process smoother. Let MD3 Homes guide you through the sale of your home.',
+  rent: 'Whether you choose to rent or buy your home depends on your financial situation, lifestyle, and goal.',
+  what: "In addition to understanding your needs, MD3 HOMES is a highly acclaimed Real Estate company in Central Florida. Once you choose us, you'll experience why we are the best fit for you.",
+  finIntro: "If you're interested in obtaining a mortgage, we can help advise you on which program could work for you. There are various programs available for both residents and non-residents.",
+  programs: [
+    ['FHA Loan','The government supports this loan, which is easy to qualify for with low initial and interest rates.'],
+    ['Conventional 30-Year Fixed','These loans offer very low fixed interest rates for up to 30 years.'],
+    ['Conventional 15-Year Fixed','Offer low rates and are designed to pay less interest over a 15-year fixed term.'],
+    ['VA Loan','Exclusively available to active military and veterans for buying or refinancing their homes, with zero or very low interest rates.'],
+    ['Reverse Mortgage','This financial tool eliminates mortgage payments and provides cash for homeowners over 62.'],
+    ['Foreign Loans','Offered to non-U.S. residents who wish to purchase properties with down payments starting at 25-35% and low-interest rates.']
+  ],
+  aboutTitle: 'The Key To Success in Real Estate',
+  about: 'Thank you for considering MD3 Homes. We pride ourselves on our commitment to integrity, transparency, and professionalism. Our team is fluent in both English and Spanish, and we specialize in properties located in Florida. We provide comprehensive real estate services to local and international clients.',
+  quote: '"We will strive to exceed your expectations in future real estate transactions."',
+  ctaTitle: 'How do we get in touch',
+  ctaText: "It is in our best interest we keep in contact in the event you may need any further assistance. Please don't hesitate to reach out to us.",
+  disclaimer: 'Equal Housing Opportunity. This material is based on information we consider reliable, but because it has been supplied by third parties, we cannot represent its accuracy or completion and should not be relied on as such.',
+  legal: 'This offering is subject to errors, omissions, change of price or withdrawal without notice.',
+  address: ['6965 Piazza Grande Ave. Suite 413','Orlando, FL 32835','info@md3homes.com','Phone: 407-557-8810','Fax: 407-809-4777']
+};
+
+const ICONS = [
+  'M4 6h16v12H4zM8 12h8M8 16h5',
+  'M3 21h18M5 21V7l7-4 7 4v14M9 9h1M14 9h1M9 13h1M14 13h1',
+  'M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z',
+  'M3 9l9-6 9 6v11a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z'
+];
+
+const VARIANTS = [
+  { key:'A', name:'A — Navy Corporate', note:'Azul marino institucional · serif en titulares',
+    vars:{ '--bg':'#F7F8FA','--surface':'#FFFFFF','--text':'#16233F','--muted':'#4A5568','--accent':'#1F4FA3','--onAccent':'#FFFFFF','--onAccentMuted':'rgba(255,255,255,0.85)','--border':'#E7EAF0','--tint':'#EEF2FA','--dark':'#16233F','--onDark':'#FFFFFF','--onDarkMuted':'rgba(255,255,255,0.72)','--heroBg':'linear-gradient(120deg, rgba(22,35,63,0.93) 0%, rgba(22,35,63,0.55) 60%, rgba(22,35,63,0.2) 100%), #BCC3CC','--heroText':'#FFFFFF','--heroMuted':'rgba(255,255,255,0.86)','--display':"'Fraunces', serif",'--body':"'Work Sans', sans-serif",'--dw':'600','--ls':'0','--r-btn':'8px','--r-card':'14px','--shadow':'0 18px 36px rgba(0,0,0,0.22)' } },
+  { key:'B', name:'B — Warm Editorial', note:'Crema, café y terracota · registro boutique',
+    vars:{ '--bg':'#FAF6EF','--surface':'#FFFDF9','--text':'#2B2621','--muted':'#5C5344','--accent':'#A9633C','--onAccent':'#FFFFFF','--onAccentMuted':'rgba(255,255,255,0.85)','--border':'#E7DFCF','--tint':'#EFE6D6','--dark':'#3A3128','--onDark':'#FAF6EF','--onDarkMuted':'rgba(250,246,239,0.72)','--heroBg':'linear-gradient(120deg, rgba(58,49,40,0.93) 0%, rgba(58,49,40,0.55) 60%, rgba(58,49,40,0.2) 100%), #C8BCA9','--heroText':'#FAF6EF','--heroMuted':'rgba(250,246,239,0.84)','--display':"'Fraunces', serif",'--body':"'Work Sans', sans-serif",'--dw':'500','--ls':'0','--r-btn':'999px','--r-card':'14px','--shadow':'0 18px 36px rgba(58,49,40,0.22)' } },
+  { key:'C', name:'C — Dark Luxury', note:'Carbón y dorado · la foto manda',
+    vars:{ '--bg':'#141415','--surface':'#0F0F10','--text':'#ECE7DD','--muted':'#9B958A','--accent':'#C9A15A','--onAccent':'#17140F','--onAccentMuted':'rgba(23,20,15,0.78)','--border':'#2A2A2A','--tint':'#232324','--dark':'#0A0A0B','--onDark':'#ECE7DD','--onDarkMuted':'rgba(236,231,221,0.65)','--heroBg':'linear-gradient(120deg, rgba(10,10,11,0.95) 0%, rgba(10,10,11,0.6) 60%, rgba(10,10,11,0.25) 100%), #55524C','--heroText':'#ECE7DD','--heroMuted':'rgba(236,231,221,0.8)','--display':"'Fraunces', serif",'--body':"'Work Sans', sans-serif",'--dw':'500','--ls':'0','--r-btn':'4px','--r-card':'6px','--shadow':'0 18px 36px rgba(0,0,0,0.5)' } },
+  { key:'D', name:'D — Fresh Minimal', note:'Blanco y verde salvia · todo sans, muy redondeado',
+    vars:{ '--bg':'#FFFFFF','--surface':'#FFFFFF','--text':'#1C2A26','--muted':'#4A5A54','--accent':'#2F6B57','--onAccent':'#FFFFFF','--onAccentMuted':'rgba(255,255,255,0.85)','--border':'#E3E8E5','--tint':'#EDF3F0','--dark':'#1C2A26','--onDark':'#FFFFFF','--onDarkMuted':'rgba(255,255,255,0.72)','--heroBg':'#EDF3F0','--heroText':'#1C2A26','--heroMuted':'#4A5A54','--display':"'Work Sans', sans-serif",'--body':"'Work Sans', sans-serif",'--dw':'600','--ls':'-0.02em','--r-btn':'999px','--r-card':'18px','--shadow':'0 14px 30px rgba(28,42,38,0.10)' } }
+];
+
+const esc = (s) => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+function pageHTML(v) {
+  const C = CONTENT;
+  const style = Object.entries(v.vars).map(([k,x]) => k + ':' + x).join(';');
+  return `
+  <div class="page" style="${style}">
+    <div class="nav">
+      <div class="logo">MD3 <span>HOMES</span></div>
+      <div class="links">${C.nav.map(n => `<a href="#">${esc(n)}</a>`).join('')}<a href="#" style="opacity:.6">Español</a></div>
+      <button class="btn">Sign In</button>
+    </div>
+
+    <div class="hero">
+      <span class="photo-note">[ aquí va la foto que ya tiene el sitio ]</span>
+      <h1>${esc(C.heroTitle)}</h1>
+      <p>${esc(C.heroText)}</p>
+      <div class="search">
+        <div class="tabs"><span class="on">Buy</span><span>Rent</span><span>Sell</span></div>
+        <div class="row">
+          ${C.searchPlaceholders.map(([l,val]) => `<div class="field"><small>${esc(l)}</small><b>${esc(val)}</b></div>`).join('')}
+          <button class="btn">Search</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="trust">
+      ${C.trust.map((t,i) => `<div><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${v.vars['--accent']}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${ICONS[i]}"/></svg></span>${esc(t)}</div>`).join('')}
+    </div>
+
+    <div class="split">
+      <div class="txt"><div class="eyebrow">BUY</div><h2>Buying Your Home</h2><p>${esc(C.buy)}</p></div>
+      <div class="imgbox">[ foto real del sitio ]</div>
+    </div>
+
+    <div class="split rev">
+      <div class="txt"><div class="eyebrow">SELL</div><h2>Selling Your Home</h2><p>${esc(C.sell)}</p></div>
+      <div class="imgbox">[ foto real del sitio ]</div>
+    </div>
+
+    <div class="band">
+      <div class="imgbox">[ foto real del sitio ]</div>
+      <div class="txt"><div class="eyebrow">RENT</div><h2>Buying vs Renting</h2><p>${esc(C.rent)}</p></div>
+    </div>
+
+    <div class="center">
+      <h2>What Would You Like to Do?</h2>
+      <div class="rule"></div>
+      <p>${esc(C.what)}</p>
+    </div>
+
+    <div class="fin">
+      <div class="head">
+        <div class="eyebrow">FINANCING</div>
+        <h2>Financing Programs</h2>
+        <p>${esc(C.finIntro)}</p>
+      </div>
+      <div class="cards">
+        ${C.programs.map(([n,d]) => `<div class="card"><h3>${esc(n)}</h3><p>${esc(d)}</p></div>`).join('')}
+      </div>
+    </div>
+
+    <div class="center" style="padding-top:64px">
+      <div class="eyebrow">ABOUT US</div>
+      <h2>${esc(C.aboutTitle)}</h2>
+      <div class="rule"></div>
+      <p>${esc(C.about)}</p>
+      <p style="margin-top:14px">${esc(C.quote)}</p>
+    </div>
+
+    <div class="cta">
+      <div><h2>${esc(C.ctaTitle)}</h2><p>${esc(C.ctaText)}</p></div>
+      <button>Send an Email</button>
+    </div>
+
+    <div class="foot">
+      <div class="cols">
+        <div>
+          <div class="logo" style="color:var(--onDark);margin-bottom:14px">MD3 <span>HOMES</span></div>
+          <p>${esc(C.disclaimer)}</p>
+        </div>
+        <div><span class="lbl">MENU</span><div class="links">${C.nav.map(n => `<a href="#">${esc(n)}</a>`).join('')}</div></div>
+        <div><span class="lbl">MAIN OFFICE</span><div class="links">${C.address.map(a => `<span>${esc(a)}</span>`).join('')}</div></div>
+      </div>
+      <div class="legal">${esc(C.legal)}</div>
+    </div>
+  </div>`;
+}
+
+const stage = document.getElementById('stage');
+const PAGE_W = 1280;
+
+function render(mode) {
+  stage.className = 'stage ' + (mode === 'compare' ? 'compare' : 'single');
+  stage.innerHTML = VARIANTS.map(v => `
+    <section class="slot ${v.key === mode ? 'active' : ''}" data-key="${v.key}">
+      <h2>${esc(v.name)}</h2>
+      <p class="sub">${esc(v.note)}</p>
+      <div class="viewport">${pageHTML(v)}</div>
+    </section>`).join('');
+  fit(mode);
+}
+
+function fit(mode) {
+  const compare = mode === 'compare';
+  const colW = compare ? Math.max(300, Math.floor((window.innerWidth - 48 - 60) / 4)) : Math.min(PAGE_W, window.innerWidth - 48);
+  stage.querySelectorAll('.slot').forEach(slot => {
+    const vp = slot.querySelector('.viewport');
+    const page = slot.querySelector('.page');
+    const scale = colW / PAGE_W;
+    page.style.transform = `scale(${scale})`;
+    vp.style.width = colW + 'px';
+    vp.style.height = Math.round(page.scrollHeight * scale) + 'px';
+    slot.style.width = colW + 'px';
+  });
+}
+
+document.getElementById('modes').addEventListener('click', (e) => {
+  const b = e.target.closest('button');
+  if (!b) return;
+  document.querySelectorAll('#modes button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  render(b.dataset.mode);
+});
+
+window.addEventListener('resize', () => {
+  const on = document.querySelector('#modes button[aria-pressed="true"]');
+  fit(on ? on.dataset.mode : 'compare');
+});
+
+render('compare');
+</script>
+</body>
+</html>
