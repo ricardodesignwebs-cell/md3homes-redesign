@@ -3,12 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- i18n-head -->
+<script>try{var l=new URLSearchParams(location.search).get('lang')||localStorage.getItem('md3-lang')||((navigator.languages||[navigator.language]).some(function(x){return /^es/i.test(x)})?'es':'en');if(l==='es'){document.documentElement.className+=' i18n-pending';setTimeout(function(){document.documentElement.classList.remove('i18n-pending')},2000)}}catch(e){}</script>
+<style>.i18n-pending body{visibility:hidden}</style>
 <title>Property Management &mdash; MD3 Homes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css?v=2e930ada">
-<link rel="stylesheet" href="assets/pages.css?v=2e930ada">
+<link rel="stylesheet" href="assets/styles.css?v=18e15e68">
+<link rel="stylesheet" href="assets/pages.css?v=18e15e68">
 </head>
 <body class="inner">
 
@@ -23,7 +26,7 @@
     <li><a href="index.html#contact">Contact Us</a></li>
   </ul>
   <div class="right">
-    <a class="lang" href="https://md3homes.com/index.php/es/?view=article&amp;id=19:comprar&amp;catid=11">ES</a>
+    <button class="lang" type="button" data-lang-toggle="short" data-no-i18n>ES</button>
     <a class="btn outline" href="rentals.html">MD3 Exclusives</a>
     <a class="btn" href="rentals.html#access">Sign In</a>
     <button class="burger" type="button" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile"><span></span></button>
@@ -40,7 +43,7 @@
   <div class="foot">
     <a class="btn" href="rentals.html#access">Sign In</a>
     <a class="btn outline" href="rentals.html" style="color: var(--ink); border-color: var(--line)">MD3 Exclusives</a>
-    <a class="lbl" href="https://md3homes.com/index.php/es/?view=article&amp;id=19:comprar&amp;catid=11">Espa&ntilde;ol</a>
+    <button class="lbl" type="button" data-lang-toggle data-no-i18n>Espa&ntilde;ol</button>
   </div>
 </div>
 
@@ -142,6 +145,8 @@
   <p class="legal">This material is based on information we consider reliable, but because it has been supplied by third parties, we cannot represent its accuracy or completion and should not be relied on as such. This offering is subject to errors, omissions, change of price or withdrawal without notice.</p>
 </footer>
 
-<script src="assets/app.js?v=2e930ada"></script>
+<script src="assets/i18n-es.js?v=18e15e68"></script>
+<script src="assets/i18n.js?v=18e15e68"></script>
+<script src="assets/app.js?v=18e15e68"></script>
 </body>
 </html>

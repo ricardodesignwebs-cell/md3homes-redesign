@@ -234,7 +234,7 @@ def listing_body(l):
         f'<button type="button" class="gcell" data-i="{i}" aria-label="View photo {i + 1}">'
         f'<img src="{photo(ph[i])}" alt=""></button>'
         for i in range(1, min(5, len(ph))))
-    facts = [("Rent", f"${l['rent']:,}/mo"), ("Bedrooms", l["beds"]),
+    facts = [("Monthly rent", f"${l['rent']:,}/mo"), ("Bedrooms", l["beds"]),
              ("Bathrooms", fmt_baths(l["baths"])), ("Size", f"{l['size']:,} sq ft"),
              ("Available", l["available"])]
     if l["year"]:
@@ -367,11 +367,13 @@ RENTALS_JS = r"""(() => {
         c.hidden = !ok;
         if (ok) n++;
       });
-      count.textContent = n === 1 ? '1 rental available' : `${n} rentals available`;
+      const t = window.md3t || ((s) => s);
+      count.textContent = t(n === 1 ? '1 rental available' : `${n} rentals available`);
       empty.hidden = n !== 0;
     };
     form.addEventListener('input', apply);
     form.addEventListener('reset', () => setTimeout(apply));
+    document.addEventListener('md3:lang', apply);
     const q0 = new URLSearchParams(location.search).get('q');
     if (q0) { form.q.value = q0; apply(); }
   }

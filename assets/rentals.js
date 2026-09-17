@@ -18,11 +18,13 @@
         c.hidden = !ok;
         if (ok) n++;
       });
-      count.textContent = n === 1 ? '1 rental available' : `${n} rentals available`;
+      const t = window.md3t || ((s) => s);
+      count.textContent = t(n === 1 ? '1 rental available' : `${n} rentals available`);
       empty.hidden = n !== 0;
     };
     form.addEventListener('input', apply);
     form.addEventListener('reset', () => setTimeout(apply));
+    document.addEventListener('md3:lang', apply);
     const q0 = new URLSearchParams(location.search).get('q');
     if (q0) { form.q.value = q0; apply(); }
   }

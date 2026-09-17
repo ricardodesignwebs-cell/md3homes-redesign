@@ -174,7 +174,7 @@ def nav(home, current=None):
         out.append(f'    <li><a href="{home}{anchor}">{label}</a></li>')
     out += ['  </ul>',
             '  <div class="right">',
-            f'    <a class="lang" href="{ES}">ES</a>',
+            '    <button class="lang" type="button" data-lang-toggle="short" data-no-i18n>ES</button>',
             '    <a class="btn outline" href="rentals.html">MD3 Exclusives</a>',
             '    <a class="btn" href="rentals.html#access">Sign In</a>',
             '    <button class="burger" type="button" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile"><span></span></button>',
@@ -196,7 +196,7 @@ def mobile(home):
     out += ['  <div class="foot">',
             '    <a class="btn" href="rentals.html#access">Sign In</a>',
             '    <a class="btn outline" href="rentals.html" style="color: var(--ink); border-color: var(--line)">MD3 Exclusives</a>',
-            f'    <a class="lbl" href="{ES}">Espa&ntilde;ol</a>',
+            '    <button class="lbl" type="button" data-lang-toggle data-no-i18n>Espa&ntilde;ol</button>',
             '  </div>', '</div>']
     return "\n".join(out)
 
@@ -415,7 +415,28 @@ PORTAL_RE = (r'href="https://md3homes\.managebuilding\.com/Resident/PublicPages/
              r'( style="[^"]*")?>')
 
 
+I18N_HEAD = """<!-- i18n-head -->
+<script>try{var l=new URLSearchParams(location.search).get('lang')||localStorage.getItem('md3-lang')||((navigator.languages||[navigator.language]).some(function(x){return /^es/i.test(x)})?'es':'en');if(l==='es'){document.documentElement.className+=' i18n-pending';setTimeout(function(){document.documentElement.classList.remove('i18n-pending')},2000)}}catch(e){}</script>
+<style>.i18n-pending body{visibility:hidden}</style>"""
+VIEWPORT = '<meta name="viewport" content="width=device-width, initial-scale=1">'
+
+
+def add_i18n(src):
+    if "<!-- i18n-head -->" not in src:
+        src = src.replace(VIEWPORT, VIEWPORT + "\n" + I18N_HEAD, 1)
+    if "assets/i18n.js" not in src:
+        src = src.replace('<script src="assets/app.js',
+                          '<script src="assets/i18n-es.js"></script>\n'
+                          '<script src="assets/i18n.js"></script>\n'
+                          '<script src="assets/app.js', 1)
+    return src
+
+
 def update_home(src):
+    src = re.sub(r'<a class="lang" href="[^"]*">ES</a>',
+                 '<button class="lang" type="button" data-lang-toggle="short" data-no-i18n>ES</button>', src)
+    src = re.sub(r'<a class="lbl" href="[^"]*">Espa(?:ñ|&ntilde;)ol</a>',
+                 '<button class="lbl" type="button" data-lang-toggle data-no-i18n>Espa&ntilde;ol</button>', src)
     if "assets/pages.css" not in src:
         src = src.replace('<link rel="stylesheet" href="assets/styles.css">',
                           '<link rel="stylesheet" href="assets/styles.css">\n'
@@ -493,13 +514,13 @@ def main():
 
     # cache-busting: ?v=<hash del contenido> en cada CSS/JS compartido
     import hashlib
-    names = ["styles.css", "pages.css", "app.js", "rentals.js"]
+    names = ["styles.css", "pages.css", "app.js", "rentals.js", "i18n.js", "i18n-es.js"]
     ver = hashlib.sha1(b"".join((ASSETS / n).read_bytes() for n in names)).hexdigest()[:8]
-    asset_re = re.compile(r'(assets/(?:styles|pages)\.css|assets/(?:app|rentals)\.js)(\?v=\w+)?')
+    asset_re = re.compile(r'(assets/(?:styles|pages)\.css|assets/(?:app|rentals|i18n|i18n-es)\.js)(\?v=\w+)?')
     for page in ROOT.glob("*.html"):
         if page.name == "comparacion.html":
             continue
-        text = page.read_text(encoding="utf-8")
+        text = add_i18n(page.read_text(encoding="utf-8"))
         page.write_text(asset_re.sub(lambda m: f"{m.group(1)}?v={ver}", text),
                         encoding="utf-8")
 

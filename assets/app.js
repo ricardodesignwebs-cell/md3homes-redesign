@@ -1,15 +1,16 @@
 (() => {
+  const t = window.md3t || ((s) => s);
   // mobile menu
   const burger = document.getElementById('burger');
   const closeMenu = () => {
     document.body.classList.remove('menu-open');
     burger.setAttribute('aria-expanded', 'false');
-    burger.setAttribute('aria-label', 'Open menu');
+    burger.setAttribute('aria-label', t('Open menu'));
   };
   burger.addEventListener('click', () => {
     const open = document.body.classList.toggle('menu-open');
     burger.setAttribute('aria-expanded', String(open));
-    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    burger.setAttribute('aria-label', t(open ? 'Close menu' : 'Open menu'));
   });
   document.querySelectorAll('#mobile a').forEach(a => a.addEventListener('click', closeMenu));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
