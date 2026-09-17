@@ -416,13 +416,16 @@ PORTAL_RE = (r'href="https://md3homes\.managebuilding\.com/Resident/PublicPages/
 
 
 I18N_HEAD = """<!-- i18n-head -->
-<script>try{var l=new URLSearchParams(location.search).get('lang')||localStorage.getItem('md3-lang')||((navigator.languages||[navigator.language]).some(function(x){return /^es/i.test(x)})?'es':'en');if(l==='es'){document.documentElement.className+=' i18n-pending';setTimeout(function(){document.documentElement.classList.remove('i18n-pending')},2000)}}catch(e){}</script>
+<script>try{var l=new URLSearchParams(location.search).get('lang')||localStorage.getItem('md3-lang')||'en';if(l==='es'){document.documentElement.className+=' i18n-pending';setTimeout(function(){document.documentElement.classList.remove('i18n-pending')},2000)}}catch(e){}</script>
 <style>.i18n-pending body{visibility:hidden}</style>"""
 VIEWPORT = '<meta name="viewport" content="width=device-width, initial-scale=1">'
 
 
 def add_i18n(src):
-    if "<!-- i18n-head -->" not in src:
+    if "<!-- i18n-head -->" in src:
+        src = re.sub(r"<!-- i18n-head -->.*?</style>", lambda m: I18N_HEAD, src,
+                     count=1, flags=re.S)
+    else:
         src = src.replace(VIEWPORT, VIEWPORT + "\n" + I18N_HEAD, 1)
     if "assets/i18n.js" not in src:
         src = src.replace('<script src="assets/app.js',

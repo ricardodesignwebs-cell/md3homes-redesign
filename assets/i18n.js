@@ -89,9 +89,7 @@
 
   let initial = 'en';
   try {
-    initial = new URLSearchParams(location.search).get('lang')
-      || localStorage.getItem(KEY)
-      || ((navigator.languages || [navigator.language]).some((l) => /^es/i.test(l)) ? 'es' : 'en');
+    initial = new URLSearchParams(location.search).get('lang') || localStorage.getItem(KEY) || 'en';
   } catch (e) { /* storage unavailable */ }
   apply(initial);
 })();
